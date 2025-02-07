@@ -11,11 +11,12 @@ read_data_json = json.load(read_json)
 # write_data_json = json.dump(read_data_json, write_json)
 
 
-def menu():
+def main_menu():
     os.system('clear')
     print("\n==================== MENU ====================")
-    print("\n  >> Press [1] to display a list of modules.")
-    print("  >> Press [2] to update a module.")
+    print("\n  >> Press [1] to Modules")
+    print("  >> Press [2] to Learners")
+    print("  >> Press [3] to Results")
     print("\n  Press [X] to close application.")
 
     
@@ -24,24 +25,81 @@ def menu():
         key_press = keyboard.read_event(suppress=True) 
     
         if key_press.event_type == "down":
-            key = key_press.name
+            key = key_press.name.lower()
             if key == "1":
-                print_json()
+                modules_menu()
                 break
             elif key == "2":
-                update_json()
+                learners_menu()
+                break
+            elif key == "3":
+                results_menu()
                 break
             elif key == "x":
-                os.system('clear')
-                exit()
+                close_app()
             else:
                 print("Invalid key! Choose a number/letter from the Menu.")
+
+# new
+def modules_menu():
+    os.system('clear')
+    print("\n==================== MODULES ====================\n")
+    print("  >> Press [1] to Display List of Modules")
+    print("  >> Press [2] to Display Edit a Module")
+    print("  >> Press [3] to Display Add a New Module")
+    print("\n  Press [M] to return to Main Menu.")
+
+
+# new
+def modules_list():
+    pass
+
+# new
+def learners_menu():
+    os.system('clear')
+    print("\n==================== LEARNERS ====================\n")
+    print("  >> Press [1] to Display List of Students")
+    print("  >> Press [2] to Display Edit a Student")
+    print("  >> Press [3] to Display Add a New Student")
+    print("\n  Press [M] to return to Main Menu.")
+
+
+# new
+def learners_list():
+    pass
+
+# new
+def results_menu():
+    os.system('clear')
+    print("\n==================== RESULTS ====================\n")
+    print("  >> RESULTS 1")
+    print("  >> RESULTS 2")
+    print("  >> RESULTS 3")
+    print("\n  Press [M] to return to Main Menu.")
+
+# new
+def close_app():
+    os.system('clear')
+    exit()
+
+
+# new
+def return_main_menu():
+    os.system('clear')
+    main_menu()
+
+
+
 
 
 
 def print_json():
     os.system('clear')
-    print("\n==================== LIST OF MODULES ====================\n")
+    print("\n==================== MODULES ====================\n")
+    print("  >> Press [1] to Display List of Modules")
+    print("  >> Press [2] to Display Edit a Module")
+    print("  >> Press [3] to Display Add a New Module")
+    print("\n  Press [M] to return to Main Menu.")
     for index, module in enumerate(read_data_json):
         print(f"  >> {index}: {module['module']}")
 
@@ -57,7 +115,7 @@ def return_or_close():
         if key_press.event_type == "down":
             key = key_press.name.lower()
             if key == "m":
-                menu()
+                main_menu()
             elif key == "x":
                 os.system('clear')
                 exit()
@@ -134,7 +192,7 @@ def update_json():
             elif key == "r":
                 update_json()
             elif key == "m":
-                menu()
+                main_menu()
             else:
                 print("\nINVALID CHOICE!!! Please, enter a number from the list above.")
 
@@ -145,7 +203,7 @@ def delete_json():
 
 
 def main():
-    menu()
+    main_menu()
 
 
 main()
