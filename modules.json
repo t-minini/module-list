@@ -1,6 +1,1 @@
-[
-  { "module": "module #1" },
-  { "module": "module #2" },
-  { "module": "module #3" },
-  { "module": "module #4" }
-]
+[{"module": "t"}, {"module": "g"}, {"module": "tulio up"}, {"module": "module #4"}]
