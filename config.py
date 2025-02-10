@@ -1,0 +1,2 @@
+MODULES_JSON_PATH = r"C:\Users\TulioMinini(Tallaght\Desktop\procedural-programming\module_list\modules.json"
+LEARNERS_JSON_PATH = r"C:\Users\TulioMinini(Tallaght\Desktop\procedural-programming\module_list\learners.json"
