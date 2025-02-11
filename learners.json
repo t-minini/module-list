@@ -10,5 +10,77 @@
       "resultsModule3": 63,
       "resultsModule4": 0
     }
+  },
+  {
+    "learnerID": "L2",
+    "firstName": "HELLO",
+    "lastName": "HI",
+    "age": "37",
+    "results": {
+      "resultsModule1": 56,
+      "resultsModule2": 10,
+      "resultsModule3": 5,
+      "resultsModule5": 5
+    }
+  },
+  {
+    "learnerID": "L3",
+    "firstName": "Tulio",
+    "lastName": "Minini",
+    "age": 37,
+    "results": {
+      "resultsModule1": 100,
+      "resultsModule2": 20,
+      "resultsModule3": 30,
+      "resultsModule4": 0
+    }
+  },
+  {
+    "learnerID": "L4",
+    "firstName": "Hannah",
+    "lastName": "Montana",
+    "age": 30,
+    "results": {
+      "resultsModule1": 10,
+      "resultsModule2": 50,
+      "resultsModule3": 100,
+      "resultsModule4": 0
+    }
+  },
+  {
+    "learnerID": "L5",
+    "firstName": "Hello",
+    "lastName": "Again",
+    "age": 21,
+    "results": {
+      "resultsModule1": 100,
+      "resultsModule2": 50,
+      "resultsModule3": 10,
+      "resultsModule4": 5
+    }
+  },
+  {
+    "learnerID": "L6",
+    "firstName": "HEY",
+    "lastName": "HEY",
+    "age": 10,
+    "results": {
+      "resultsModule1": 10,
+      "resultsModule2": 10,
+      "resultsModule3": 10,
+      "resultsModule4": 10
+    }
+  },
+  {
+    "learnerID": "L7",
+    "firstName": "HELLO",
+    "lastName": "HELLO",
+    "age": 10,
+    "results": {
+      "resultsModule1": 10,
+      "resultsModule2": 10,
+      "resultsModule3": 10,
+      "resultsModule4": 10
+    }
   }
 ]

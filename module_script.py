@@ -3,29 +3,25 @@ import time
 import json
 import keyboard
 
-
 import config
 import main_script
 
-
-read_json = open(config.MODULES_JSON_PATH, "r")
-read_data_json = json.load(read_json)
-
+read_modules_json = open(config.MODULES_JSON_PATH, "r")
+read_data_modules = json.load(read_modules_json)
 
 def modules_menu():
     os.system('clear')
-    print("\n==================== MODULES MENU ====================\n")
+    print("\n============== MODULES MENU ==============\n")
     print("  >> Press [1] to Display List of Modules")
     print("  >> Press [2] to Add a New Module")
     print("  >> Press [3] to Edit a Module")
     print("  >> Press [4] to Delete a Module")
+    print("  >> Press [5] to Save Module List as .txt")
     print("\n  Press [R] to return to Main Menu.")
-
 
     while True:
         key_press = keyboard.read_event(suppress=True) 
     
-
         if key_press.event_type == "down":
             key = key_press.name.lower()
             if key == "1":
@@ -40,6 +36,9 @@ def modules_menu():
             elif key == "4":
                 modules_delete()
                 break
+            elif key == "5":
+                modules_save_txt()
+                break
             elif key == "r":
                 main_script.main()
                 break
@@ -49,7 +48,7 @@ def modules_menu():
 
 def modules_list():
     os.system('clear')
-    print("\n==================== LIST OF MODULES ====================\n")
+    print("\n============ LIST OF MODULES ===========\n")
 
     moduleID_width = 10
     moduleName_width = 30
@@ -59,7 +58,7 @@ def modules_list():
     print("-" * (moduleID_width + moduleName_width))
 
     # display list of modules in a table format
-    for index, module in enumerate(read_data_json, start = 1):
+    for index, module in enumerate(read_data_modules, start = 1):
         print(f"{module['moduleID']:<{moduleID_width}} {module['module']:<{moduleName_width}}")
 
     print("\nPress [R] to return to Modules Menu.")
@@ -78,10 +77,28 @@ def modules_list():
 
 def modules_add():
     os.system('clear')
-    print("\n==================== ADD NEW MODULE ====================\n")
+    print("\n============ ADD NEW MODULE ============\n")
 
-    new_module_name = input("  >>> Please, enter the name of the new module: ")
-    newID = "M" + f"{len(read_data_json) + 1}"
+    if len(read_data_modules) >= 4:
+        os.system('clear')
+        print("\n==================== WARNING ====================\n")
+        print("  >> You cannot add more modules.")
+        print("  >> The maximum number of modules is 4.\n")
+        print("  Press [R] to return to Modules Menu.")
+        
+        while True:
+            key_press = keyboard.read_event(suppress=True)
+            if key_press.event_type == "down":
+                key = key_press.name.lower()
+                if key == "r":
+                    modules_menu()
+                    break
+                else:
+                    print("Invalid key! Press [R] to return to Modules Menu.")
+        return
+
+    new_module_name = input("  >>> Module name: ")
+    newID = "M" + f"{len(read_data_modules) + 1}"
     
     # create the new module structure
     new_module = {
@@ -90,14 +107,14 @@ def modules_add():
     }
 
     # add the new module
-    read_data_json.append(new_module)
+    read_data_modules.append(new_module)
 
     # save the updated data to the json file
     with open(config.MODULES_JSON_PATH, "w") as write_json:
-        json.dump(read_data_json, write_json, indent=4)
+        json.dump(read_data_modules, write_json, indent=4)
 
     os.system('clear')
-    print("\n======================== STATUS =======================\n")
+    print("\n================== STATUS ==================\n")
     print(f"  >> New module \"{new_module_name}\" successfully added!")
 
     print("\n  Press [R] to return to Modules Menu.")
@@ -115,11 +132,11 @@ def modules_add():
 
 def modules_edit():
     os.system('clear')
-    print("\n==================== CHOOSE A MODULE TO EDIT ====================\n")
+    print("\n========== CHOOSE A MODULE TO EDIT ==========\n")
 
     # display list of modules
-    for index, module in enumerate(read_data_json, start = 1):
-        print(f"  >> Press [{index}] to update Module {index}: \"{module['module']}\"")
+    for index, module in enumerate(read_data_modules, start = 1):
+        print(f"  >> Press [{index}] to edit: {module['module']} (M{index})")
 
     print("\n  Press [R] to return to Modules Menu.")
 
@@ -137,12 +154,12 @@ def modules_edit():
                     modules_menu()
                     return
 
-                if index >= 0 and index < len(read_data_json):
+                if index >= 0 and index < len(read_data_modules):
                     os.system('clear')
-                    print("\n==================== UPDATE A MODULE ====================\n")
-                    print(f"  >> Module to update: \"{read_data_json[index]['module']}\"\n")
+                    print("\n=============== EDIT A MODULE ===============\n")
+                    print(f"  >> Module to update: \"{read_data_modules[index]['module']}\"\n")
                     
-                    update_mod_name = input("  >>> Please, enter a new module name: ")
+                    update_mod_name = input("  >>> New module name: ")
                     print(f"\n  >>> Confirm change to: \"{update_mod_name}\"? [Y/N]")
 
                     while True:
@@ -152,17 +169,17 @@ def modules_edit():
                             confirm = confirm_key.name.lower()
 
                             if confirm == "y":
-                                read_data_json[index]['module'] = update_mod_name
+                                read_data_modules[index]['module'] = update_mod_name
                                 with open(config.MODULES_JSON_PATH, "w") as write_json: # this opens and close the file
-                                    json.dump(read_data_json, write_json)
+                                    json.dump(read_data_modules, write_json)
 
                                 os.system('clear')
-                                print("\n======================== STATUS =======================\n")
+                                print("\n===================== STATUS =====================\n")
                                 print(f"  >> Module name successfully updated to: \"{update_mod_name}\"")
 
                             elif confirm == "n":
                                 os.system('clear')
-                                print("\n======================== STATUS =======================\n")
+                                print("\n================== STATUS ==================\n")
                                 print("  >> Update cancelled.")
                             else:
                                 print("Invalid choice! Press [Y] to confirm or [N] to cancel.")
@@ -186,11 +203,11 @@ def modules_edit():
 
 def modules_delete():
     os.system('clear')
-    print("\n==================== CHOOSE A MODULE TO DELETE ====================\n")
+    print("\n============ CHOOSE A MODULE TO DELETE ============\n")
 
     # display list of modules
-    for index, module in enumerate(read_data_json, start=1):
-        print(f"  >> Press [{index}] to delete Module {index}: \"{module['module']}\"")
+    for index, module in enumerate(read_data_modules, start=1):
+        print(f"  >> Press [{index}] to delete: {module['module']} (M{index})")
 
     print("\n  Press [R] to return to Modules Menu.")
 
@@ -203,13 +220,13 @@ def modules_delete():
             if key.isdigit():
                 index = int(key) - 1
 
-                if index >= 0 and index < len(read_data_json):
+                if index >= 0 and index < len(read_data_modules):
                     os.system('clear')
-                    print(f"\n==================== DELETE MODULE ====================\n")
-                    print(f"  >> Module to delete: \"{read_data_json[index]['module']}\"\n")
+                    print(f"\n================== DELETE MODULE ==================\n")
+                    print(f"  >> Module to delete: {read_data_modules[index]['module']} (M{index + 1})\n")
                     
                     # ssk for confirmation before deleting
-                    print(f"  >>> Are you sure you want to delete the \"{read_data_json[index]['module']}\" module? [Y/N]")
+                    print(f"  >>> Confirm deletion of \"{read_data_modules[index]['module']}\" (M{index + 1}) module? [Y/N]")
                     
                     while True:
                         confirm_key = keyboard.read_event(suppress=True)
@@ -217,17 +234,17 @@ def modules_delete():
                             confirm = confirm_key.name.lower()
 
                             if confirm == "y":
-                                deleted_module = read_data_json.pop(index)
+                                deleted_module = read_data_modules.pop(index)
                                 with open(config.MODULES_JSON_PATH, "w") as write_json:
-                                    json.dump(read_data_json, write_json)
+                                    json.dump(read_data_modules, write_json)
 
                                 os.system('clear')
-                                print("\n======================== STATUS =======================\n")
+                                print("\n====================== STATUS =====================\n")
                                 print(f"  >> Module \"{deleted_module['module']}\" successfully deleted.")
                                 break
                             elif confirm == "n":
                                 os.system('clear')
-                                print("\n======================== STATUS =======================\n")
+                                print("\n====================== STATUS =====================\n")
                                 print("  >> Deletion cancelled.")
                                 break
                             else:
@@ -251,8 +268,39 @@ def modules_delete():
                 print("Invalid key! Choose a number/letter from the Menu.")
 
 
+def modules_save_txt():
+    os.system('clear')
+
+    moduleID_width = 10
+    moduleName_width = 20
+
+    with open(config.MODULES_TXT_PATH, "w") as txt_file:
+        txt_file.write("======= List of Modules =======\n")
+        txt_file.write(f"\n{'Module ID':<{moduleID_width}} {'Module Name':<{moduleName_width}}\n")
+        txt_file.write("-" * (moduleID_width + moduleName_width) + "\n")
+        
+        for module in read_data_modules:
+            txt_file.write(f"{module['moduleID']:<{moduleID_width}} {module['module']:<{moduleName_width}}\n")
+
+    os.system('clear')
+    print("\n==================== STATUS ====================\n")
+    print(f"  >> Module list successfully saved to {config.MODULES_TXT_PATH}")
+    print("\n  Press [R] to return to Modules Menu.")
+
+    while True:
+        key_press = keyboard.read_event(suppress=True)
+        if key_press.event_type == "down":
+            key = key_press.name.lower()
+            if key == "r":
+                modules_menu()
+                break
+            else:
+                print("Invalid key! Press [R] to return to Modules Menu.")
+
+
 def module_script():
-    modules_menu
-    modules_add
-    modules_edit
-    modules_delete
+    modules_menu()
+    modules_add()
+    modules_edit()
+    modules_delete()
+    modules_save_txt()

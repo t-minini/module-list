@@ -1,1 +1,6 @@
-[{"moduleID": "M1", "module": "Data Structures"}, {"moduleID": "M2", "module": "Algorithms"}, {"moduleID": "M3", "module": "Object-Oriented Programming"}, {"moduleID": "M4", "module": "Web Development"}]
+[
+  { "moduleID": "M1", "module": "Data Structures" },
+  { "moduleID": "M2", "module": "Algorithms" },
+  { "moduleID": "M3", "module": "Python" },
+  { "moduleID": "M4", "module": "C#" }
+]

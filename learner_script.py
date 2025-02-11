@@ -6,23 +6,23 @@ import keyboard
 import config
 import main_script
 
-read_json = open(config.LEARNERS_JSON_PATH, "r")
-read_data_json = json.load(read_json)
+read_learners_json = open(config.LEARNERS_JSON_PATH, "r")
+read_data_learners = json.load(read_learners_json)
+
+read_modules_json = open(config.MODULES_JSON_PATH, "r")
+read_data_modules = json.load(read_modules_json)
 
 def learners_menu():
     os.system('clear')
-    print("\n==================== LEARNERS MENU ====================\n")
+    print("\n============== LEARNERS MENU ==============\n")
     print("  >> Press [1] to Display List of Learners")
     print("  >> Press [2] to Add a New Learner")
-    print("  >> Press [3] to Edit a Learner")
-    print("  >> Press [4] to Delete a Learner")
+    print("  >> Press [3] to Delete a Learner")
     print("\n  Press [R] to return to Main Menu.")
-
 
     while True:
         key_press = keyboard.read_event(suppress=True) 
     
-
         if key_press.event_type == "down":
             key = key_press.name.lower()
             if key == "1":
@@ -32,9 +32,6 @@ def learners_menu():
                 learners_add()
                 break
             elif key == "3":
-                learners_edit()
-                break
-            elif key == "4":
                 learners_delete()
                 break
             elif key == "r":
@@ -43,33 +40,25 @@ def learners_menu():
             else:
                 print("Invalid key! Choose a number/letter from the Menu.")
 
-def learners_add():
-    pass
-
-def learners_edit():
-    pass
-
-def learners_delete():
-    pass
 
 def learners_list():
     os.system('clear')
-    print("\n==================== LIST OF LEARNERS ====================\n")
+    print("\n============= LIST OF LEARNERS =============\n")
 
     learnerID_width = 12
     learnerFName_width = 12
     learnerLName_width = 12
-    learnerAge_width = 6
+    learnerAge_width = 7
 
     # formarting table header
     print(f"{'Learner ID':<{learnerID_width}} {'First Name':<{learnerFName_width}} {'Last Name':<{learnerLName_width}} {'Age':<{learnerAge_width}}")
     print("-" * (learnerID_width + learnerFName_width + learnerLName_width + learnerAge_width))
 
-    # display list of modules in a table format
-    for index, learner in enumerate(read_data_json, start = 1):
+    # display list of learners in a table format
+    for learner in read_data_learners:
         print(f"{learner['learnerID']:<{learnerID_width}} {learner['firstName']:<{learnerFName_width}} {learner['lastName']:<{learnerLName_width}} {learner['age']:<{learnerAge_width}}")
 
-    print("\nPress [R] to return to Modules Menu.")
+    print("\nPress [R] to return to Learners Menu.")
 
     while True:
         key_press = keyboard.read_event(suppress=True) 
@@ -80,189 +69,161 @@ def learners_list():
                 learners_menu()
                 break
             else:
-                print("Invalid key! Click [R] to return Modules Menu.")
+                print("Invalid key! Click [R] to return Learners Menu.")
 
 
+def learners_add():
+    os.system('clear')
+    print("\n==================== ADD NEW LEARNER ====================\n")
 
-# new
-# def modules_edit():
-#     os.system('clear')
-#     print("\n==================== CHOOSE A MODULE TO EDIT ====================\n")
-
-#     # display list of modules
-#     for index, module in enumerate(read_data_json, start = 1):
-#         print(f"  >> Press [{index}] to update Module {index}: \"{module['module']}\"")
-
-#     print("\n  Press [R] to return to Modules Menu.")
-
-#     while True:
-#         # this waits for user input
-#         key_press = keyboard.read_event(suppress=True) 
-    
-#         if key_press.event_type == "down":
-#             key = key_press.name.lower()
-            
-#             if key.isdigit():
-#                 index = int(key) - 1
-
-#                 if key == "r":
-#                     learners_menu()
-#                     return
-
-#                 if index >= 0 and index < len(read_data_json):
-#                     os.system('clear')
-#                     print("\n==================== UPDATE A MODULE ====================\n")
-#                     print(f"  >> Module to update: \"{read_data_json[index]['module']}\"\n")
-                    
-#                     update_mod_name = input("  >>> Please, enter a new module name: ")
-#                     print(f"\n  >>> Confirm change to: \"{update_mod_name}\"? [Y/N]")
-
-#                     while True:
-#                         confirm_key = keyboard.read_event(suppress=True)
-
-#                         if confirm_key.event_type == "down":
-#                             confirm = confirm_key.name.lower()
-
-#                             if confirm == "y":
-#                                 read_data_json[index]['module'] = update_mod_name
-#                                 with open(modules_json_path, "w") as write_json: # this opens and close the file
-#                                     json.dump(read_data_json, write_json)
-
-#                                 os.system('clear')
-#                                 print("\n======================== STATUS =======================\n")
-#                                 print(f"  >> Module name successfully updated to: \"{update_mod_name}\"")
-
-#                             elif confirm == "n":
-#                                 os.system('clear')
-#                                 print("\n======================== STATUS =======================\n")
-#                                 print("  >> Update cancelled.")
-#                             else:
-#                                 print("Invalid choice! Press [Y] to confirm or [N] to cancel.")
-#                                 continue
-                            
-#                             print("\n  Press [R] to return to List of Modules.")
-#                             time.sleep(0.1)
-#                             while True:
-#                                 key_press = keyboard.read_event(suppress=True) 
-    
-#                                 if key_press.event_type == "down":
-#                                     key = key_press.name.lower()
-#                                     if key == "r":
-#                                         modules_list()
-#                                         return
-#                                 else:
-#                                         print("Invalid key! Click [R] to return Modules Menu.")
-#                 else:
-#                     print("Invalid key! Choose a number/letter from the Menu.")
-
-# new
-# def modules_add():
-#     os.system('clear')
-#     print("\n==================== ADD NEW MODULE ====================\n")
-
-#     new_module_name = input("  >>> Please, enter the name of the new module: ")
-#     newID = "M" + f"{len(read_data_json) + 1}"
-    
-#     # create the new module structure
-#     new_module = {
-#         "moduleID": newID,
-#         "module": new_module_name
-#     }
-
-#     # add the new module
-#     read_data_json.append(new_module)
-
-#     # save the updated data to the json file
-#     with open(modules_json_path, "w") as write_json:
-#         json.dump(read_data_json, write_json, indent=4)
-
-#     os.system('clear')
-#     print("\n======================== STATUS =======================\n")
-#     print(f"  >> New module \"{new_module_name}\" successfully added!")
-
-#     print("\n  Press [R] to return to Modules Menu.")
-#     while True:
-#         key_press = keyboard.read_event(suppress=True) 
-    
-#         if key_press.event_type == "down":
-#             key = key_press.name.lower()
-#             if key == "r":
-#                 modules_menu()
-#                 break
-#             else:
-#                 print("Invalid key! Press [R] to return Modules Menu.")
-
-
-# def modules_delete():
-#     os.system('clear')
-#     print("\n==================== CHOOSE A MODULE TO DELETE ====================\n")
-
-#     # display list of modules
-#     for index, module in enumerate(read_data_json, start=1):
-#         print(f"  >> Press [{index}] to delete Module {index}: \"{module['module']}\"")
-
-#     print("\n  Press [R] to return to Modules Menu.")
-
-#     while True:
-#         key_press = keyboard.read_event(suppress=True) 
+    if len(read_data_learners) >= 8:
+        os.system('clear')
+        print("\n==================== WARNING ====================\n")
+        print("  >> You cannot add more learners.")
+        print("  >> The maximum number of learners is 8.\n")
+        print("  Press [R] to return to Learners Menu.")
         
-#         if key_press.event_type == "down":
-#             key = key_press.name.lower()
+        while True:
+            key_press = keyboard.read_event(suppress=True)
+            if key_press.event_type == "down":
+                key = key_press.name.lower()
+                if key == "r":
+                    learners_menu()
+                    break
+                else:
+                    print("Invalid key! Press [R] to return to Learners Menu.")
+        return
+    
+    newID = "L" + f"{len(read_data_learners) + 1}"
+    new_learner_FName = input("  >>> Learner's First Name: ")
+    new_learner_LName = input("  >>> Learner's Last Name: ")
+    new_learner_age = int(input("  >>> Learner's Age: "))
+    
+    def get_valid_grade(module, moduleID):
+        while True:
+            try:
+                grade = int(input(f"  >>> Results for {module} ({moduleID}): "))
+                if grade >= 0 and grade <= 100:
+                    return grade
+                else:
+                    print("  >>> Invalid grade! Please enter a grade between 0 and 100.")
+            except:
+                print("  >>> Invalid input! Please enter a number.")
 
-#             if key.isdigit():
-#                 index = int(key) - 1
+    # Get valid grades for each module
+    new_learner_res1 = get_valid_grade(read_data_modules[0]['module'], read_data_modules[0]['moduleID'])
+    new_learner_res2 = get_valid_grade(read_data_modules[1]['module'], read_data_modules[1]['moduleID'])
+    new_learner_res3 = get_valid_grade(read_data_modules[2]['module'], read_data_modules[2]['moduleID'])
+    new_learner_res4 = get_valid_grade(read_data_modules[3]['module'], read_data_modules[3]['moduleID'])
+    
+    # create the new learner structure
+    new_learner = {
+        "learnerID": newID,
+        "firstName": new_learner_FName,
+        "lastName": new_learner_LName,
+        "age": new_learner_age,
+        "results": {
+            "resultsModule1": new_learner_res1,
+            "resultsModule2": new_learner_res2,
+            "resultsModule3": new_learner_res3,
+            "resultsModule4": new_learner_res4,
+        }
+    }
 
-#                 if index >= 0 and index < len(read_data_json):
-#                     os.system('clear')
-#                     print(f"\n==================== DELETE MODULE ====================\n")
-#                     print(f"  >> Module to delete: \"{read_data_json[index]['module']}\"\n")
+    # add the new learner
+    read_data_learners.append(new_learner)
+
+    # save the updated data to the json file
+    with open(config.LEARNERS_JSON_PATH, "w") as write_json:
+        json.dump(read_data_learners, write_json, indent=4)
+
+    os.system('clear')
+    print("\n======================== STATUS =======================\n")
+    print(f"  >> New learner \"{new_learner_FName} {new_learner_LName}\" successfully added!")
+
+    print("\n  Press [R] to return to Learners Menu.")
+    while True:
+        key_press = keyboard.read_event(suppress=True) 
+    
+        if key_press.event_type == "down":
+            key = key_press.name.lower()
+            if key == "r":
+                learners_menu()
+                break
+            else:
+                print("Invalid key! Press [R] to return Learners Menu.")
+
+
+
+def learners_delete():
+    os.system('clear')
+    print("\n============ CHOOSE A LEARNER TO DELETE ============\n")
+
+    # display list of modules
+    for index, learner in enumerate(read_data_learners, start=1):
+        print(f"  >> Press [{index}] to delete: {learner['firstName']} {learner['lastName']} ({learner['learnerID']})")
+
+    print("\n  Press [R] to return to Learners Menu.")
+
+    while True:
+        key_press = keyboard.read_event(suppress=True) 
+        
+        if key_press.event_type == "down":
+            key = key_press.name.lower()
+
+            if key.isdigit():
+                index = int(key) - 1
+
+                if index >= 0 and index < len(read_data_learners):
+                    os.system('clear')
+                    print(f"\n================== DELETE LEARNER ==================\n")
+                    print(f"  >> Learner to delete: {read_data_learners[index]['firstName']} {read_data_learners[index]['lastName']} ({read_data_learners[index]['learnerID']})\n")
                     
-#                     # ssk for confirmation before deleting
-#                     print(f"  >>> Are you sure you want to delete the \"{read_data_json[index]['module']}\" module? [Y/N]")
+                    # ssk for confirmation before deleting
+                    print(f"  >>> Confirm deletion of \"{read_data_learners[index]['firstName']} {read_data_learners[index]['lastName']} ({read_data_learners[index]['learnerID']})\" learner? [Y/N]")
                     
-#                     while True:
-#                         confirm_key = keyboard.read_event(suppress=True)
-#                         if confirm_key.event_type == "down":
-#                             confirm = confirm_key.name.lower()
+                    while True:
+                        confirm_key = keyboard.read_event(suppress=True)
+                        if confirm_key.event_type == "down":
+                            confirm = confirm_key.name.lower()
 
-#                             if confirm == "y":
-#                                 deleted_module = read_data_json.pop(index)
-#                                 with open(modules_json_path, "w") as write_json:
-#                                     json.dump(read_data_json, write_json)
+                            if confirm == "y":
+                                deleted_learner = read_data_learners.pop(index)
+                                with open(config.LEARNERS_JSON_PATH, "w") as write_json:
+                                    json.dump(read_data_learners, write_json)
 
-#                                 os.system('clear')
-#                                 print("\n======================== STATUS =======================\n")
-#                                 print(f"  >> Module \"{deleted_module['module']}\" successfully deleted.")
-#                                 break
-#                             elif confirm == "n":
-#                                 os.system('clear')
-#                                 print("\n======================== STATUS =======================\n")
-#                                 print("  >> Deletion cancelled.")
-#                                 break
-#                             else:
-#                                 print("Invalid choice! Press [Y] to confirm or [N] to cancel.")
-#                                 continue
+                                os.system('clear')
+                                print("\n====================== STATUS =====================\n")
+                                print(f"  >> Learner \"{deleted_learner['firstName']} {deleted_learner['lastName']}\" successfully deleted.")
+                                break
+                            elif confirm == "n":
+                                os.system('clear')
+                                print("\n====================== STATUS =====================\n")
+                                print("  >> Deletion cancelled.")
+                                break
+                            else:
+                                print("Invalid choice! Press [Y] to confirm or [N] to cancel.")
+                                continue
                     
-#                     print("\n  Press [R] to return to List of Modules.")
-#                     time.sleep(0.1)
-#                     while True:
-#                         key_press = keyboard.read_event(suppress=True) 
-#                         if key_press.event_type == "down":
-#                             key = key_press.name.lower()
-#                             if key == "r":
-#                                 modules_list()
-#                                 return
-#                         else:
-#                             print("Invalid key! Press [R] to return to List of Modules.")
-#                 else:
-#                     print("Invalid number! Choose a number corresponding to a module.")
-#             else:
-#                 print("Invalid key! Choose a number/letter from the Menu.")
+                    print("\n  Press [R] to return to List of Learners.")
+                    time.sleep(0.1)
+                    while True:
+                        key_press = keyboard.read_event(suppress=True) 
+                        if key_press.event_type == "down":
+                            key = key_press.name.lower()
+                            if key == "r":
+                                learners_list()
+                                return
+                        else:
+                            print("Invalid key! Press [R] to return to List of Learners.")
+                else:
+                    print("Invalid number! Choose a number corresponding to a Learner.")
+            else:
+                print("Invalid key! Choose a number/letter from the Menu.")
 
 
 def learner_script():
     learners_menu()
-    learners_list
-
-
-learner_script()
+    learners_list()
+    learners_add()
+    learners_delete()

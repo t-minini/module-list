@@ -8,11 +8,11 @@ import keyboard
 
 def main_menu():
     os.system('clear')
-    print("\n==================== MAIN MENU ====================")
-    print("\n  >> Press [1] to Modules")
-    print("  >> Press [2] to Learners")
+    print("\n============ MAIN MENU ============")
+    print("\n  >> Press [1] to Modules Menu")
+    print("  >> Press [2] to Learners Menu")
     print("  >> Press [3] to Results")
-    print("\n  Press [X] to close application.")
+    print("\n  Press [X] to close app.")
 
 
     while True:
